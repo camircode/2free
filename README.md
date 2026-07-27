@@ -31,9 +31,9 @@ fuera de la tienda.
 
 ## Experiencia
 
-| Escritorio                                                                                                                      | Móvil                                                                                                                     |
-| ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| ![Modo invitado de 2 Free en escritorio](artifacts/visual/mobile-first-finance-experience/route/route-desktop-light-motion.png) | ![Modo invitado de 2 Free en móvil](artifacts/visual/mobile-first-finance-experience/route/route-mobile-light-motion.png) |
+| Escritorio                                                                                                                   | Móvil                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| ![Modo invitado de 2 Free en escritorio](artifacts/visual/mobile-first-finance-experience/route/guest-dashboard-desktop.png) | ![Modo invitado de 2 Free en móvil](artifacts/visual/mobile-first-finance-experience/route/guest-dashboard-mobile.png) |
 
 Estas capturas muestran el modo invitado disponible en la web, sin registro ni datos reales. La misma
 arquitectura visual se adapta a web, AppImage y Android. Los flujos complejos aparecen bajo demanda,
