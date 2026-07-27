@@ -64,17 +64,22 @@ describe("reference-aligned foundation", () => {
     expect(themes).toMatch(/\[data-theme="dark"\][\s\S]*--text-primary:\s*#[0-9a-f]{6}/i);
   });
 
-  it("uses local-only font declarations and documents missing binaries", () => {
+  it("bundles licensed fonts for deterministic offline rendering", () => {
     const typography = readStyle("typography.css");
     const notes = readFileSync(resolve(stylesRoot, "README.md"), "utf8");
+    const manifest = JSON.parse(readFileSync(resolve(packageRoot, "package.json"), "utf8")) as {
+      dependencies: Record<string, string>;
+    };
 
-    expect(typography).toContain('font-family: "Urbanist"');
-    expect(typography).toContain('src: local("Urbanist")');
-    expect(typography).toContain('font-family: "Open Sans"');
-    expect(typography).toContain('src: local("Open Sans")');
-    expect(typography).not.toMatch(/@import\s+url\(|https?:\/\/|url\(/i);
-    expect(notes).toContain("No licensed Urbanist or Open Sans font binaries");
-    expect(notes).toContain("do not invent or add font binaries");
+    expect(typography).toContain('@import "@fontsource-variable/urbanist"');
+    expect(typography).toContain('@import "@fontsource-variable/open-sans"');
+    expect(typography).toContain('"Urbanist Variable", "Urbanist"');
+    expect(typography).toContain('"Open Sans Variable", "Open Sans"');
+    expect(typography).not.toMatch(/https?:\/\//i);
+    expect(manifest.dependencies["@fontsource-variable/urbanist"]).toBe("5.3.0");
+    expect(manifest.dependencies["@fontsource-variable/open-sans"]).toBe("5.3.0");
+    expect(notes).toContain("OFL-1.1");
+    expect(notes).toMatch(/without remote\s+font requests/);
   });
 
   it("keeps the supplied logo byte-identical and package-exported", () => {

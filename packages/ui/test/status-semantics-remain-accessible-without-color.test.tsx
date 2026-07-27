@@ -56,7 +56,7 @@ describe("semantic themes and status foundations", () => {
     }
   });
 
-  it("resolves selected themes, focus, and missing-font fallbacks at runtime", () => {
+  it("resolves selected themes, focus, and packaged-font fallbacks at runtime", () => {
     const { rerender } = render(
       <div data-theme="dark">
         <button type="button">Focus target</button>
@@ -76,7 +76,8 @@ describe("semantic themes and status foundations", () => {
     expect(styles).toContain("--surface-canvas: #fffdf8");
     expect(foundation).toContain("focus-visible");
     expect(typography).toContain("--font-body");
-    expect(typography).not.toMatch(/@import|url\(/);
+    expect(typography).toContain('@import "@fontsource-variable/open-sans"');
+    expect(typography).not.toMatch(/https?:\/\//);
     expect(screen.getByText("Readable fallback text").textContent).toContain("Readable");
     button.focus();
     expect(document.activeElement).toBe(button);

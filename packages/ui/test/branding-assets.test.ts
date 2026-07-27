@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 import { describe, expect, it } from "vitest";
@@ -17,15 +17,16 @@ describe("offline branding and typography fallbacks", () => {
     expect(packageLogo).toBe(suppliedLogo);
   });
 
-  it("uses explicit fallback stacks without requiring font binaries or remote fonts", () => {
+  it("self-hosts licensed fonts with explicit fallback stacks", () => {
     const typography = readFileSync(resolve(packageRoot, "src/styles/typography.css"), "utf8");
     const typographyNotes = readFileSync(resolve(packageRoot, "src/styles/README.md"), "utf8");
 
-    expect(typography).toContain('"Urbanist"');
-    expect(typography).toContain('"Open Sans"');
-    expect(typography).not.toMatch(/@import\s+url\(|https?:\/\//);
-    expect(typographyNotes).toContain("No licensed Urbanist or Open Sans font binaries");
-    expect(existsSync(resolve(packageRoot, "src/assets/fonts"))).toBe(false);
+    expect(typography).toContain('@import "@fontsource-variable/urbanist"');
+    expect(typography).toContain('@import "@fontsource-variable/open-sans"');
+    expect(typography).toContain('"Urbanist Variable", "Urbanist"');
+    expect(typography).toContain('"Open Sans Variable", "Open Sans"');
+    expect(typography).not.toMatch(/https?:\/\//);
+    expect(typographyNotes).toMatch(/without remote\s+font requests/);
   });
 
   it("keeps the visual harness on the supplied package asset boundary", () => {

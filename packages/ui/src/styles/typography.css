@@ -1,23 +1,9 @@
-/* These local-only faces activate when the user already has the licensed font installed. */
-@font-face {
-  font-family: "Urbanist";
-  src: local("Urbanist");
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Open Sans";
-  src: local("Open Sans");
-  font-style: normal;
-  font-weight: 300 800;
-  font-display: swap;
-}
+@import "@fontsource-variable/urbanist";
+@import "@fontsource-variable/open-sans";
 
 :root {
-  --font-display: "Urbanist", "Avenir Next", "Segoe UI", sans-serif;
-  --font-body: "Open Sans", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Urbanist Variable", "Urbanist", "Avenir Next", "Segoe UI", sans-serif;
+  --font-body: "Open Sans Variable", "Open Sans", "Segoe UI", system-ui, sans-serif;
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 

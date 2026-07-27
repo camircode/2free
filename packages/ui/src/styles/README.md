@@ -18,15 +18,10 @@ semantic role, and leading border so the state remains understandable without co
 
 ## Typography assets
 
-No licensed Urbanist or Open Sans font binaries were supplied with this change. The
-package therefore declares local-only `@font-face` entries plus explicit readable
-system fallback stacks in `typography.css`; it does not use remote `@import`, URLs, or
-font service requests.
-
-When supplied and licensed binaries with approved weights become available, add only
-those files under `src/assets/fonts/` and extend the local declarations with their
-approved sources. Until then, do not invent or add font binaries; the fallback stacks
-preserve readable content and layout offline.
+The package bundles Urbanist Variable and Open Sans Variable through Fontsource `5.3.0`.
+Both families use the OFL-1.1 license and load from the installed package without remote
+font requests. This keeps web, desktop, Android, and visual-test typography consistent
+while preserving explicit readable system fallback stacks in `typography.css`.
 
 ## Branding
 
