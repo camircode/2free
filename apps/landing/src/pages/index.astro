@@ -3,13 +3,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 const webUrl = import.meta.env.PUBLIC_WEB_URL?.trim() || "http://localhost:3000";
 const guestUrl = new URL("guest", webUrl.endsWith("/") ? webUrl : `${webUrl}/`).toString();
-const repository = import.meta.env.PUBLIC_GITHUB_REPOSITORY?.trim();
+const repository = import.meta.env.PUBLIC_GITHUB_REPOSITORY?.trim() || "camircode/2free";
 const releaseRepository = repository && /^[\w.-]+\/[\w.-]+$/u.test(repository) ? repository : undefined;
 const releaseBaseUrl = releaseRepository
   ? `https://github.com/${releaseRepository}/releases/latest/download`
   : undefined;
 const canonicalUrl = new URL("/", Astro.site).toString();
-const sourceUrl = import.meta.env.PUBLIC_SOURCE_URL?.trim();
+const sourceUrl =
+  import.meta.env.PUBLIC_SOURCE_URL?.trim() || "https://github.com/camircode/2free";
 const softwareStructuredData = {
   "@type": "SoftwareApplication",
   "@id": `${canonicalUrl}#software`,

@@ -29,7 +29,8 @@ const {
 const canonical = new URL(canonicalPath, Astro.site);
 const siteUrl = new URL("/", Astro.site);
 const socialImage = new URL(socialImageAsset.src, Astro.site);
-const sourceUrl = import.meta.env.PUBLIC_SOURCE_URL?.trim();
+const sourceUrl =
+  import.meta.env.PUBLIC_SOURCE_URL?.trim() || "https://github.com/camircode/2free";
 const organizationId = new URL("/#organization", Astro.site).toString();
 const websiteId = new URL("/#website", Astro.site).toString();
 const webPageId = `${canonical.toString()}#webpage`;
@@ -117,7 +118,7 @@ const structuredData = {
         <a href="/#privacidad">Privacidad</a>
         <a href="/#descargas">Descargas</a>
         <a href="/autohospedaje/">Autohospedaje</a>
-        {sourceUrl && <a href={sourceUrl}>Código fuente</a>}
+        <a href={sourceUrl} aria-label="Ver repositorio de 2 Free en GitHub">GitHub</a>
       </nav>
     </header>
     <main id="contenido"><slot /></main>
@@ -129,7 +130,7 @@ const structuredData = {
       <div class="footer-links">
         <a href="/autohospedaje/">Documentación</a>
         <a href="https://www.gnu.org/licenses/agpl-3.0.html">AGPLv3</a>
-        {sourceUrl && <a href={sourceUrl}>Código fuente</a>}
+        <a href={sourceUrl} aria-label="Ver repositorio de 2 Free en GitHub">GitHub</a>
       </div>
     </footer>
     <script>
