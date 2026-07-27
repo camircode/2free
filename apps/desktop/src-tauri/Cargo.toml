@@ -1,6 +1,6 @@
 [package]
 name = "two-free"
-version = "0.1.0"
+version = "0.1.1"
 description = "2 Free desktop and mobile shell"
 authors = ["2 Free"]
 edition = "2021"
