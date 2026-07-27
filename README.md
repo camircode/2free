@@ -31,12 +31,13 @@ fuera de la tienda.
 
 ## Experiencia
 
-| Escritorio                                                                                                                         | Móvil                                                                                                                        |
-| ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| ![Panel financiero de 2 Free en escritorio](artifacts/visual/mobile-first-finance-experience/route/route-desktop-light-motion.png) | ![Panel financiero de 2 Free en móvil](artifacts/visual/mobile-first-finance-experience/route/route-mobile-light-motion.png) |
+| Escritorio                                                                                                                      | Móvil                                                                                                                     |
+| ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| ![Modo invitado de 2 Free en escritorio](artifacts/visual/mobile-first-finance-experience/route/route-desktop-light-motion.png) | ![Modo invitado de 2 Free en móvil](artifacts/visual/mobile-first-finance-experience/route/route-mobile-light-motion.png) |
 
-La misma arquitectura visual se adapta a web, AppImage y Android. Los flujos complejos aparecen bajo
-demanda, los montos se calculan sin punto flotante binario y el modo local no requiere cuenta ni red.
+Estas capturas muestran el modo invitado disponible en la web, sin registro ni datos reales. La misma
+arquitectura visual se adapta a web, AppImage y Android. Los flujos complejos aparecen bajo demanda,
+los montos se calculan sin punto flotante binario y el modo local no requiere cuenta ni red.
 
 ## Tecnologías
 
