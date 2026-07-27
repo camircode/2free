@@ -1,0 +1,519 @@
+:root {
+  font-family: var(--font-body, system-ui, sans-serif);
+  color: var(--text-primary);
+  background: var(--surface-canvas);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.desktop-app {
+  min-height: 100vh;
+}
+
+.desktop-app__wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 1.24rem;
+  font-weight: 750;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.desktop-app__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.desktop-app__mode {
+  border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  border-radius: 999px;
+  padding: 0.42rem 0.7rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.desktop-app__mode[data-mode="local"] {
+  color: var(--color-status-success);
+  background: var(--surface-status-success);
+}
+
+.desktop-app__mode[data-mode="api"] {
+  color: var(--color-status-warning);
+  background: var(--surface-status-warning);
+}
+
+.desktop-app__sync {
+  border-radius: 999px;
+  padding: 0.42rem 0.7rem;
+  color: var(--color-status-success);
+  background: var(--surface-status-success);
+  font-size: 0.72rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.desktop-app__sync[data-state="error"] {
+  color: var(--color-status-danger);
+  background: var(--surface-status-danger);
+}
+.desktop-app__sync[data-state="syncing"] {
+  color: var(--color-status-warning);
+  background: var(--surface-status-warning);
+}
+
+.desktop-app__page {
+  width: min(100%, 74rem);
+  margin-inline: auto;
+}
+
+.desktop-home__heading {
+  padding-block: clamp(1rem, 3vw, 2rem) 0.25rem;
+}
+
+.desktop-home__heading p,
+.desktop-home__heading h1 {
+  margin: 0;
+}
+
+.desktop-home__heading p {
+  color: var(--text-secondary);
+  font-weight: 700;
+}
+
+.desktop-home__heading h1 {
+  max-inline-size: none;
+  font-size: clamp(2.5rem, 6vw, 4.8rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+
+.desktop-home__actions {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.desktop-home__actions h2 {
+  margin: 0;
+  font: 750 clamp(1.2rem, 3vw, 1.6rem) / 1 var(--font-display);
+  letter-spacing: -0.025em;
+}
+
+.desktop-home__action-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(2rem, 5vw, 4rem);
+}
+
+.desktop-home__action,
+.desktop-home__action-list .ui-portfolio__button--quick {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  inline-size: 7.5rem;
+  min-block-size: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: var(--text-primary);
+  background: transparent;
+  box-shadow: none;
+  font: 700 0.82rem / 1.25 var(--font-display);
+  text-align: center;
+  cursor: pointer;
+}
+
+.desktop-home__action > span:first-child,
+.desktop-home__action-list .ui-portfolio__button--quick > span:first-child {
+  display: grid;
+  place-items: center;
+  inline-size: 3.5rem;
+  block-size: 3.5rem;
+  border-radius: 50%;
+  color: var(--text-inverse);
+  background: var(--surface-inverse);
+  box-shadow: var(--shadow-soft);
+}
+
+.desktop-home__action svg {
+  inline-size: 1.45rem;
+  block-size: 1.45rem;
+}
+
+.desktop-onboarding__choices button {
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.65rem 0.9rem;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.desktop-onboarding__choices button[aria-pressed="true"] {
+  color: var(--text-inverse);
+  background: var(--surface-inverse);
+}
+
+.desktop-onboarding,
+.desktop-fatal,
+.desktop-loading {
+  width: min(100% - 2rem, 72rem);
+  min-height: 100vh;
+  margin-inline: auto;
+  display: grid;
+  align-content: center;
+  gap: 1rem;
+  padding-block: 2rem;
+  box-sizing: border-box;
+}
+
+.desktop-onboarding > img,
+.desktop-fatal > img {
+  width: 8rem;
+}
+
+.desktop-onboarding h1,
+.desktop-fatal h1 {
+  max-width: 13ch;
+  margin: 0;
+  font-size: clamp(2.4rem, 7vw, 5.5rem);
+  line-height: 0.95;
+}
+
+.desktop-onboarding > p,
+.desktop-fatal > p {
+  max-width: 60ch;
+}
+
+.desktop-onboarding form,
+.desktop-account-form,
+.desktop-mode-settings,
+.desktop-auth {
+  display: grid;
+  gap: 0.85rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+  border-radius: 1.4rem;
+  background: var(--surface-panel);
+  box-shadow: var(--shadow-card);
+}
+
+.desktop-onboarding form label,
+.desktop-account-form label,
+.desktop-mode-settings label,
+.desktop-auth label {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 750;
+}
+
+.desktop-onboarding input,
+.desktop-account-form input,
+.desktop-account-form select,
+.desktop-mode-settings input,
+.desktop-auth input {
+  min-height: 2.8rem;
+  padding-inline: 0.8rem;
+  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  border-radius: 0.7rem;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+}
+
+.desktop-onboarding form > button,
+.desktop-account-form > button,
+.desktop-mode-settings > button,
+.desktop-auth > button:first-of-type,
+.desktop-auth__session button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.8rem 1.1rem;
+  color: var(--text-inverse);
+  background: var(--surface-inverse);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.desktop-onboarding__choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.desktop-onboarding__proof {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem;
+  border-radius: 0.8rem;
+  background: var(--surface-status-success);
+}
+
+.desktop-kicker {
+  margin: 0;
+  color: var(--accent-primary);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.desktop-account-form,
+.desktop-mode-settings {
+  width: min(100% - 2rem, 68rem);
+  margin: 1.5rem auto;
+}
+
+.desktop-confirm {
+  grid-template-columns: auto 1fr !important;
+  align-items: start;
+}
+
+.desktop-confirm input {
+  min-height: auto;
+}
+
+.desktop-auth {
+  box-shadow: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.desktop-auth-access {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.desktop-auth-access > button,
+.desktop-auth-access__identity {
+  min-block-size: 2.75rem;
+  padding-inline: 0.85rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  color: var(--text-primary);
+  background: var(--surface-raised);
+  font: 750 0.78rem / 1 var(--font-display);
+}
+
+.desktop-auth-access > button {
+  cursor: pointer;
+}
+
+.desktop-auth-access__identity {
+  display: inline-flex;
+  align-items: center;
+  max-inline-size: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.desktop-auth-dialog {
+  inline-size: min(100% - 2rem, 30rem);
+}
+
+.desktop-link-button {
+  border: 0;
+  color: inherit;
+  background: transparent;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.finance-record-dialog form,
+.finance-record-dialog label,
+.finance-record-dialog__confirmation {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.finance-record-dialog label {
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.finance-record-dialog :is(input, select) {
+  min-block-size: 3rem;
+  padding-inline: 0.85rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 0.85rem;
+  color: var(--text-primary);
+  background: var(--surface-raised);
+  font: inherit;
+}
+
+.finance-record-dialog [data-tone="error"] {
+  color: var(--color-status-danger);
+}
+
+.finance-record-dialog__confirmation > p {
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.account-settings {
+  display: grid;
+  gap: var(--space-5);
+  inline-size: min(100%, 74rem);
+  margin: var(--space-6) auto;
+}
+
+.account-settings__intro {
+  display: grid;
+  gap: var(--space-2);
+  max-inline-size: 48rem;
+}
+
+.account-settings__intro h2,
+.account-settings__intro p,
+.account-settings__form h3 {
+  margin: 0;
+}
+
+.account-settings__intro h2 {
+  font: 750 clamp(2rem, 5vw, 3.35rem) / 1 var(--font-display);
+  letter-spacing: -0.04em;
+}
+
+.account-settings__intro p {
+  color: var(--text-secondary);
+}
+
+.account-settings__forms {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.account-settings__form,
+.account-settings__state {
+  display: grid;
+  gap: var(--space-4);
+  min-inline-size: 0;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1.35rem;
+  background: var(--surface-panel);
+  box-shadow: var(--shadow-soft);
+}
+
+.account-settings__field {
+  display: grid;
+  gap: 0.55rem;
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+.account-settings input {
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-block-size: 3rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 0.9rem;
+  color: var(--text-primary);
+  background: var(--surface-raised);
+}
+
+.account-settings__form > button {
+  justify-self: start;
+  min-block-size: 3rem;
+  padding: 0.75rem 1.1rem;
+  border: 1px solid var(--accent-primary);
+  border-radius: var(--radius-pill);
+  color: var(--text-on-accent);
+  background: var(--accent-primary);
+  font-family: var(--font-display);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.account-settings__feedback {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.84rem;
+  font-weight: 750;
+}
+
+.account-settings__feedback--success {
+  color: var(--color-status-success);
+}
+
+.account-settings__feedback--error {
+  color: var(--color-status-danger);
+}
+
+.desktop-app__footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem clamp(1rem, 4vw, 3rem) 6.5rem;
+  color: color-mix(in srgb, currentColor 58%, transparent);
+  font-size: 0.75rem;
+}
+
+@media (max-width: 760px) {
+  .desktop-app__actions {
+    gap: 0.4rem;
+  }
+
+  .desktop-app__mode {
+    max-width: 5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .desktop-app__sync {
+    max-width: 8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .desktop-app__actions .ui-portfolio__button {
+    padding-inline: 0.7rem;
+  }
+
+  .desktop-auth-access__identity,
+  .desktop-app__sync {
+    display: none;
+  }
+
+  .desktop-app__footer {
+    padding-bottom: 7rem;
+  }
+
+  .desktop-onboarding {
+    align-content: start;
+  }
+
+  .account-settings__forms {
+    grid-template-columns: 1fr;
+  }
+
+  .account-settings__form > button {
+    inline-size: 100%;
+  }
+}

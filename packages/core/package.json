@@ -1,0 +1,19 @@
+{
+  "name": "@2free/core",
+  "version": "0.1.0",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "exports": {
+    "./account.js": "./src/account.ts",
+    "./identifiers.js": "./src/identifiers.ts",
+    "./money.js": "./src/money.ts",
+    "./privacy.js": "./src/privacy.ts",
+    "./product-domain.js": "./src/product-domain.ts",
+    "./transaction.js": "./src/transaction.ts",
+    "./validation.js": "./src/validation.ts"
+  },
+  "dependencies": {
+    "decimal.js": "10.6.0"
+  }
+}

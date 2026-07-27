@@ -1,0 +1,27 @@
+{
+  "name": "@2free/data-provider",
+  "version": "0.1.0",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./browser": {
+      "types": "./src/browser.ts",
+      "default": "./src/browser.ts"
+    },
+    "./in-memory-provider.js": "./src/in-memory-provider.ts",
+    "./portability.js": "./src/portability.ts",
+    "./provider.js": "./src/provider.ts"
+  },
+  "dependencies": {
+    "@2free/core": "workspace:*",
+    "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.20.0"
+  },
+  "scripts": {
+    "test": "vitest run --config vitest.config.ts"
+  }
+}

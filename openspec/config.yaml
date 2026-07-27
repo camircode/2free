@@ -1,0 +1,50 @@
+schema: spec-driven
+
+context: |
+  Project: 2 Free, currently an empty/bootstrap repository with supplied logo assets.
+  Intended stack: AGPLv3 TypeScript pnpm monorepo; Next.js web; Astro landing; Tauri clients; NestJS API.
+  Intended architecture: shared React UI/core/data-provider packages with local-first encrypted SQLite and optional backend sync.
+  Intended integrations: PostgreSQL, Better Auth, native notifications, precise-decimal finance logic, and import/export.
+  Current evidence: no source manifests, application code, tests, CI, or project conventions detected.
+  Assets detected: SVG, PNG, ICO/PNG logo files at repository root.
+  Delivery strategy: auto-forecast; review budget: 800 lines.
+
+strict_tdd: false
+
+testing:
+  runner: null
+  framework: null
+  unit: null
+  integration: null
+  e2e: null
+  coverage: null
+  linter: null
+  type_checker: null
+  formatter: null
+  reason: No test runner or project tooling exists yet; strict TDD is disabled until tooling is introduced.
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes.
+    - Keep product brief context separate from approved requirements.
+  specs:
+    - Use Given/When/Then scenarios.
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY).
+  design:
+    - Document architecture decisions with rationale.
+    - Include sequence diagrams for complex flows.
+  tasks:
+    - Group by phase and use hierarchical numbering.
+    - Keep tasks completable in one session.
+  apply:
+    guidelines:
+      - Establish tests and quality tooling before feature implementation.
+      - Follow conventions recorded by the initialized project.
+    tdd: false
+    test_command: ""
+  verify:
+    test_command: ""
+    build_command: ""
+    coverage_threshold: 0
+  archive:
+    - Warn before merging destructive deltas.

@@ -1,0 +1,111 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-2free}
+      POSTGRES_USER: ${POSTGRES_USER:-2free}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-2free}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 5s
+
+  migration:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    command: ["pnpm", "--filter", "@2free/database", "db:migrate"]
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-2free}:${POSTGRES_PASSWORD:-2free}@db:5432/${POSTGRES_DB:-2free}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      APP_VERSION: ${APP_VERSION:-0.1.0}
+      BUILD_SHA: ${BUILD_SHA:-local}
+      APP_PROFILE: ${APP_PROFILE:-compose-cloud-dev}
+      API_HOST: 0.0.0.0
+      API_PORT: 3001
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-2free}:${POSTGRES_PASSWORD:-2free}@db:5432/${POSTGRES_DB:-2free}
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-dev-only-insecure-2free-auth-key-2026}
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL:-http://localhost:3001}
+      TRUSTED_ORIGINS: ${TRUSTED_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000,http://localhost:1420,http://127.0.0.1:1420,tauri://localhost}
+      DATA_ENCRYPTION_KEY: ${DATA_ENCRYPTION_KEY:-MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDE=}
+      FINANCE_BOUNDARY_LOCKED: "true"
+    depends_on:
+      migration:
+        condition: service_completed_successfully
+    ports:
+      - "127.0.0.1:${API_PORT:-3001}:3001"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3001/health').then(r=>process.exit(r.status===200?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:?NEXT_PUBLIC_API_URL must be configured}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      API_URL: ${API_URL:?API_URL must be configured}
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:?NEXT_PUBLIC_API_URL must be configured}
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
+  landing:
+    profiles: ["landing"]
+    build:
+      context: .
+      dockerfile: apps/landing/Dockerfile
+      args:
+        PUBLIC_SITE_URL: ${PUBLIC_SITE_URL:-http://localhost:4321}
+        PUBLIC_WEB_URL: ${PUBLIC_WEB_URL:-http://localhost:3000}
+        PUBLIC_SOURCE_URL: ${PUBLIC_SOURCE_URL:-}
+        PUBLIC_GITHUB_REPOSITORY: ${PUBLIC_GITHUB_REPOSITORY:-}
+    restart: unless-stopped
+    ports:
+      - "${LANDING_PORT:-4321}:80"
+
+volumes:
+  postgres_data:

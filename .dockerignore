@@ -1,0 +1,15 @@
+.git
+.codegraph
+.atl
+.next
+**/.next
+**/dist
+**/node_modules
+artifacts
+coverage
+node_modules
+openspec
+*.log
+.env
+.env.*
+!.env.example

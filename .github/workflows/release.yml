@@ -1,0 +1,129 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  appimage:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Install Linux bundle dependencies
+        run: >-
+          sudo apt-get update && sudo apt-get install -y
+          libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libfuse2
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.13.1
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.18.0
+          cache: pnpm
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build AppImage
+        run: pnpm --filter @2free/desktop tauri build --bundles appimage
+      - name: Normalize AppImage name
+        run: |
+          mkdir -p release
+          install -Dm755 apps/desktop/src-tauri/target/release/bundle/appimage/*.AppImage release/2-Free.AppImage
+      - name: Upload AppImage
+        uses: actions/upload-artifact@v4
+        with:
+          name: appimage
+          path: release/2-Free.AppImage
+
+  android:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.13.1
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.18.0
+          cache: pnpm
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+      - name: Install Android toolchain
+        run: sdkmanager "platforms;android-36" "build-tools;35.0.0" "ndk;29.0.14206865"
+      - name: Set up Rust Android target
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Configure Android signing
+        env:
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_BASE64: ${{ secrets.ANDROID_KEY_BASE64 }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          test -n "$ANDROID_KEY_ALIAS"
+          test -n "$ANDROID_KEY_BASE64"
+          test -n "$ANDROID_KEY_PASSWORD"
+          printf '%s' "$ANDROID_KEY_BASE64" | base64 --decode > "$RUNNER_TEMP/android-release.jks"
+          {
+            printf 'keyAlias=%s\n' "$ANDROID_KEY_ALIAS"
+            printf 'password=%s\n' "$ANDROID_KEY_PASSWORD"
+            printf 'storeFile=%s\n' "$RUNNER_TEMP/android-release.jks"
+          } > apps/desktop/src-tauri/gen/android/keystore.properties
+      - name: Add NDK ranlib compatibility aliases
+        run: |
+          mkdir -p "$RUNNER_TEMP/android-toolchain-aliases"
+          ln -s "$ANDROID_HOME/ndk/29.0.14206865/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ranlib" "$RUNNER_TEMP/android-toolchain-aliases/aarch64-linux-android-ranlib"
+          echo "$RUNNER_TEMP/android-toolchain-aliases" >> "$GITHUB_PATH"
+      - name: Build signed ARM64 APK
+        run: >-
+          NDK_HOME="$ANDROID_HOME/ndk/29.0.14206865"
+          pnpm --filter @2free/desktop tauri android build --apk --target aarch64 --ci
+      - name: Verify and normalize APK
+        run: |
+          APK=apps/desktop/src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release.apk
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs "$APK"
+          mkdir -p release
+          install -Dm644 "$APK" release/2-Free.apk
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: android
+          path: release/2-Free.apk
+
+  publish:
+    needs: [appimage, android]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Download release assets
+        uses: actions/download-artifact@v4
+        with:
+          path: release
+          merge-multiple: true
+      - name: Create checksums
+        run: cd release && sha256sum 2-Free.AppImage 2-Free.apk > SHA256SUMS.txt
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh release view "${{ github.ref_name }}" --repo "${{ github.repository }}" >/dev/null 2>&1; then
+            gh release create "${{ github.ref_name }}" --repo "${{ github.repository }}" --title "2 Free ${{ github.ref_name }}" --generate-notes
+          fi
+          gh release upload "${{ github.ref_name }}" release/* --repo "${{ github.repository }}" --clobber

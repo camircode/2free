@@ -1,0 +1,21 @@
+{
+  "name": "@2free/application",
+  "version": "0.1.0",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "@2free/auth": "workspace:*",
+    "@2free/core": "workspace:*",
+    "@2free/data-provider": "workspace:*"
+  },
+  "scripts": {
+    "test": "vitest run --config vitest.config.ts"
+  }
+}
